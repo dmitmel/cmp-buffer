@@ -4,8 +4,8 @@
 ---@field public regex any
 ---@field public timer any|nil
 ---@field public lines_words table<number, string[]>
----@field public unique_words_curr_line table<string, boolean>
----@field public unique_words_other_lines table<string, boolean>
+---@field public unique_words_curr_line table<string, number>
+---@field public unique_words_other_lines table<string, number>
 ---@field public unique_words_curr_line_dirty boolean
 ---@field public unique_words_other_lines_dirty boolean
 ---@field public last_edit_first_line number
@@ -323,7 +323,7 @@ end
 function buffer.rebuild_unique_words(self, words_table, range_start, range_end)
   for i = range_start + 1, range_end do
     for _, w in ipairs(self.lines_words[i]) do
-      words_table[w] = true
+      words_table[w] = (words_table[w] or 0) + 1
     end
   end
 end
